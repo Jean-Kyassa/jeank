@@ -1,144 +1,160 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+void main (){
+  runApp(MyApp());
 }
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
+class MyApp extends StatelessWidget{
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          scaffoldBackgroundColor:const Color(
-              0xffdbf4fc) ),
 
-      home: const Calculator(),
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
     );
   }
 }
 
-class Calculator extends StatefulWidget {
-  const Calculator({super.key});
+class LoginPage extends StatelessWidget{
 
-  @override
-  State<Calculator> createState() => _CalculatorState();
-}
+  Widget build(BuildContext context){
 
-class _CalculatorState extends State<Calculator> {
-  @override
-  Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    return  Scaffold(
-      body:SafeArea(
-        child: Column (
-          children:  [
-            Expanded(
-              child: SingleChildScrollView(
-                reverse: true,
-                child: Container(
-                  alignment: Alignment.bottomRight,
-                  padding: const EdgeInsets.all(16),
-                  child: const Text("0",style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.end,),
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(begin: Alignment.topCenter, colors: [
+            Colors.cyan[500]!,
+            Colors.cyan[300]!,
+            Colors.cyan[400]!,
+          ]),
+        ),
 
-                ),
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 80,),
+            Header(),
+            Expanded(child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(60),
+                  topRight: Radius.circular(60),
+                )
               ),
-            ),
-            Wrap(
-                children: Calculatorbtn.buttonValues.map((value) =>SizedBox(
-                  width //: value == "AC"? screenSize.width /2
-                      : value == "0"
-                      ? screenSize.width /2
-                      : screenSize.width / 4,
-                  height:  screenSize.width /4.5,
-                  child: buildButton(value),
-                ),
-                ).toList()
-            ),
+
+              child: InputWrapper(),
+            ))
           ],
         ),
-      ),);
-  }
-  Widget buildButton(value){
-    return Padding(
-      padding: const EdgeInsets.all(6.0),
-      child: Material(
-        clipBehavior: Clip.hardEdge,
-        color: getBtnColor(value),
-        shape: OutlineInputBorder(
-
-            borderSide: const BorderSide(color: Colors.transparent),
-            borderRadius:
-            BorderRadius.circular(25)),
-        child: InkWell(
-          onTap: () {},
-          child:
-          Center(child: Text(value , style:  const TextStyle(fontSize: 30),),),),
       ),
     );
   }
-  Color getBtnColor (value){
-    return [ Calculatorbtn.del, Calculatorbtn.clr,Calculatorbtn.parenthese].contains(value)? const Color(
-        0xff9cff23) :[
-      Calculatorbtn.add,
-      //Calculatricebtn.calculate,
-      Calculatorbtn.divide,
-      Calculatorbtn.multiply,
-      Calculatorbtn.subtract
-    ].contains(value)? const Color(0xFF9FFFCF):
-    [Calculatorbtn.calculate].contains(value)? const Color(0xFF018DFF):
-    const Color(0xffffffff);
-  }
-
 }
-class Calculatorbtn {
-  static const clr = "AC";
-  static const del = "⌫";
-  static const multiply = "x";
-  static const divide = "÷";
-  static const add = "+";
-  static const subtract = "−";
-  static const calculate = "=";
-  static const dot = ".";
 
-  static const parenthese = "( )";
+class InputWrapper extends StatelessWidget{
+  Widget build(BuildContext context){
+    return Padding(
+      padding: EdgeInsets.all(30),
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 40,),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10)
+            ),
+            child: InputField(),
+          ),
+          SizedBox(height: 40,),
+          Text(
+            "Forgot Password", style: TextStyle(color: Colors.grey),
+          ),
+          SizedBox(height: 40,),
+          Button()
+        ],
+      ),
+    );
+  }
+}
+class InputField extends StatelessWidget{
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: Colors.grey[100]!)
+            )
+          ),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: "Enter your Email",
+              hintStyle: TextStyle(color: Colors.grey),
+              border: InputBorder.none,
+            ),
+          ),
+        ),
 
-  static const n0 = "0";
-  static const n1 = "1";
-  static const n2 = "2";
-  static const n3 = "3";
-  static const n4 = "4";
-  static const n5 = "5";
-  static const n6 = "6";
-  static const n7 = "7";
-  static const n8 = "8";
-  static const n9 = "9";
+        Container(
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(color: Colors.grey[100]!)
+              )
+          ),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: "Enter your Password",
+              hintStyle: TextStyle(color: Colors.grey),
+              border: InputBorder.none,
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
 
+class Button extends StatelessWidget {
+  Widget build(BuildContext context){
 
-  static const List buttonValues=[
+    return Container(
+      height: 50,
+      margin: EdgeInsets.symmetric(horizontal: 50),
+      decoration: BoxDecoration(
+        color: Colors.cyan[500],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Center(
+        child: Text("Login", style: TextStyle(
+          color: Colors.white,
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+        ),),
+      ),
+    );
+  }
+}
 
-    clr,
-    parenthese,
-    del,
-    add,
-    n9,
-    n8,
-    n7,
-    subtract,
-    n6,
-    n5,
-    n4,
-    multiply,
-    n3,
-    n2,
-    n1,
-    divide,
-    n0,
-    dot,
-    calculate
-  ];
+class Header extends StatelessWidget {
+  Widget build(BuildContext context){
+    return Padding(
+      padding: EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Center(
+            child: Text("Login", style: TextStyle(color: Colors.white, fontSize: 40),),
+          ),
+          SizedBox(height: 10,),
+          Center(
+            child: Text("Welcome To Our Platform",style: TextStyle(color: Colors.white,fontSize: 18),),
+
+          )
+        ],
+      ),
+    );
+  }
 }
